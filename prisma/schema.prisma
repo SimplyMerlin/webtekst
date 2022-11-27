@@ -12,12 +12,19 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
+model ArticleCategory {
+  name        String    @id
+  prettyName  String
+  posts       Article[]
+}
+
 model Article {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String   @db.Text
   content   String   @db.Text
+  categories ArticleCategory[]
 }
 
 // Necessary for Next auth
