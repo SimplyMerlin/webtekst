@@ -1,4 +1,4 @@
-import { GetStaticProps, type NextPage } from "next";
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { prisma } from "../server/db/client";
@@ -48,7 +48,7 @@ function getMonth(date: Date) {
 
 function generateTimestamp(date: Date) {
   const now = new Date(Date.now());
-  var prefix = "";
+  let prefix = "";
   if (date.getUTCFullYear() == now.getUTCFullYear()) {
     if (date.getUTCMonth() == now.getUTCMonth()) {
       if (date.getUTCDate() == now.getUTCDate()) {
