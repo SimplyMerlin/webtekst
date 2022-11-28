@@ -1,6 +1,15 @@
+import { GetStaticProps } from "next";
+import { MDXRemote } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { prisma } from "../../server/db/client";
 import Link from "next/link";
 
-const ArticlePage = () => {
+const components = {
+  a: (props: any) => <Link {...props} target="_blank"></Link>,
+};
+
+const ArticlePage = (props: { content: MDXRemoteSerializeResult }) => {
   return (
     <>
       <header className="my-4 px-4 font-mono print:hidden">
@@ -14,18 +23,36 @@ const ArticlePage = () => {
       </header>
       <main className="container mx-auto px-4 font-mono">
         <article className="prose mx-auto dark:prose-invert">
-          <h1>Test Artikel</h1>
-          <p>Dit is een test artikel geschreven voor webtekst.</p>
-          <h2>Wat is webtekst?</h2>
-          <p>
-            Webtekst is eigenlijk teletekst, maar dan hip. Snap je, niet{" "}
-            <strong>Tele</strong>Tekst maar <strong>Web</strong>Tekst. haha.
-            Wauwie.
-          </p>
+          <MDXRemote {...props.content} components={components} />
         </article>
       </main>
     </>
   );
 };
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  if (!params || !params.slug || typeof params.slug !== "string") {
+    return {
+      notFound: true,
+    };
+  }
+  const article = await prisma.article.findFirst({
+    where: {
+      slug: params.slug,
+    },
+  });
+  if (!article) return { notFound: true };
+  const mdxSource = await serialize(article.content);
+  return {
+    props: {
+      content: mdxSource,
+    },
+    revalidate: 30,
+  };
+};
+
+export async function getStaticPaths() {
+  return { paths: [], fallback: "blocking" };
+}
 
 export default ArticlePage;
