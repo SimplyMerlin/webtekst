@@ -111,10 +111,9 @@ const NavBar: React.FC = () => {
     <header className="my-4 px-6 font-mono">
       <div className="container mx-auto">
         <div className="flex place-content-center">
-          <div className="flex gap-x-2">
+          <div className="hidden gap-x-2 sm:flex">
             {categories.map((item, index) => (
               <>
-                {console.log(item.href, router.pathname)}
                 <Link
                   key={item.name}
                   href={item.href}
@@ -130,6 +129,30 @@ const NavBar: React.FC = () => {
                 </Link>
                 {index < categories.length - 1 && (
                   <span className="text-black/50 dark:text-white/30">•</span>
+                )}
+              </>
+            ))}
+          </div>
+          <div className="grid grid-cols-[1fr_minmax(0,_auto)_1fr] gap-x-2 sm:hidden">
+            {categories.map((item, index) => (
+              <>
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={classNames(
+                    item.href == router.asPath
+                      ? ""
+                      : "text-black/50 hover:text-black/80 dark:text-white/25 dark:hover:text-white/75",
+                    "transition-colors"
+                  )}
+                  aria-current={item.current ? "page" : undefined}
+                >
+                  {item.name}
+                </Link>
+                {index < categories.length - 1 && index % 2 == 0 && (
+                  <span className="inline text-black/50 dark:text-white/30">
+                    •
+                  </span>
                 )}
               </>
             ))}
