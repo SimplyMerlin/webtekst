@@ -3,7 +3,7 @@ import Link from "next/link";
 const ArticlePage = () => {
   return (
     <>
-      <header className="my-4 px-4 font-mono">
+      <header className="my-4 px-4 font-mono print:hidden">
         <div className="mx-auto max-w-3xl">
           <Link href="/">
             <span className="text-black/50 underline decoration-dashed transition-colors hover:text-black/80 dark:text-white/25 dark:hover:text-white/75">

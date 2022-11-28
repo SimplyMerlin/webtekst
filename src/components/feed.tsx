@@ -89,7 +89,10 @@ const ArticleList: React.FC<{ articles: Article[] }> = ({ articles }) => {
   return (
     <ul className="flex flex-col gap-y-4">
       {articles.map((item, index) => (
-        <li key={index} className="even:text-black/80 dark:even:text-white/80">
+        <li
+          key={index}
+          className="transition-all even:text-black/80 hover:text-black/60 dark:even:text-white/80 hover:dark:text-white/60"
+        >
           <Link href={"/artikel/" + item.slug}>
             <div className="flex justify-between">
               <span>{item.title}</span>
