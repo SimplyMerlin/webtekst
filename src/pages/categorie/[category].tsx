@@ -21,6 +21,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     select: {
       title: true,
       createdAt: true,
+      slug: true,
     },
     where: {
       categories: {

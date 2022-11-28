@@ -23,6 +23,7 @@ model Article {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String   @db.Text
+  slug      String?
   content   String   @db.Text
   categories ArticleCategory[]
 }

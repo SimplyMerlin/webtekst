@@ -1,8 +1,10 @@
 import Head from "next/head";
 
 import { Article } from "@prisma/client";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
-const catogories = [
+const categories = [
   { name: "Alles", href: "/", current: true },
   { name: "Voetbal", href: "/categorie/voetbal", current: false },
   { name: "Binnenland", href: "/categorie/binnenland", current: false },
@@ -72,7 +74,11 @@ export const Feed = (props: { articles: Article[] }) => {
       <NavBar />
       <main className="px-6 font-mono">
         <div className="container mx-auto max-w-5xl">
-          <ArticleList articles={props.articles} />
+          {props.articles.length == 0 ? (
+            <div className="text-center">Deze categorie is leeg...</div>
+          ) : (
+            <ArticleList articles={props.articles} />
+          )}
         </div>
       </main>
     </>
@@ -84,12 +90,14 @@ const ArticleList: React.FC<{ articles: Article[] }> = ({ articles }) => {
     <ul className="flex flex-col gap-y-4">
       {articles.map((item, index) => (
         <li key={index} className="even:text-black/80 dark:even:text-white/80">
-          <div className="flex justify-between">
-            <span>{item.title}</span>
-            <span className="opacity-75">
-              {generateTimestamp(new Date(item.createdAt))}
-            </span>
-          </div>
+          <Link href={"/artikel/" + item.slug}>
+            <div className="flex justify-between">
+              <span>{item.title}</span>
+              <span className="text-right opacity-75">
+                {generateTimestamp(new Date(item.createdAt))}
+              </span>
+            </div>
+          </Link>
         </li>
       ))}
     </ul>
@@ -97,18 +105,21 @@ const ArticleList: React.FC<{ articles: Article[] }> = ({ articles }) => {
 };
 
 const NavBar: React.FC = () => {
+  const router = useRouter();
+
   return (
     <header className="my-4 px-6 font-mono">
       <div className="container mx-auto">
         <div className="flex place-content-center">
           <div className="flex gap-x-2">
-            {catogories.map((item, index) => (
+            {categories.map((item, index) => (
               <>
-                <a
+                {console.log(item.href, router.pathname)}
+                <Link
                   key={item.name}
                   href={item.href}
                   className={classNames(
-                    item.current
+                    item.href == router.asPath
                       ? ""
                       : "text-black/50 hover:text-black/80 dark:text-white/25 dark:hover:text-white/75",
                     "transition-colors"
@@ -116,8 +127,8 @@ const NavBar: React.FC = () => {
                   aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
-                </a>
-                {index < catogories.length - 1 && (
+                </Link>
+                {index < categories.length - 1 && (
                   <span className="text-black/50 dark:text-white/30">•</span>
                 )}
               </>
