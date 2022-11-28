@@ -19,10 +19,8 @@ const ArticlePage = () => {
           <h2>Wat is webtekst?</h2>
           <p>
             Webtekst is eigenlijk teletekst, maar dan hip. Snap je, niet{" "}
-            <strong>Tele</strong>Tekst maar <strong>Web</strong>Tekst. haha. Het
-            zou zo kunnen dat deze website niet meer webtekst heet als je dit
-            leest, dat zou{" "}
-            <span className="text-[#fce94f]">best leuk zijn</span>.
+            <strong>Tele</strong>Tekst maar <strong>Web</strong>Tekst. haha.
+            Wauwie.
           </p>
         </article>
       </main>
